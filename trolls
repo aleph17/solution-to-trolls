@@ -1,0 +1,34 @@
+def file_read(file):
+    try:
+       with open(file, 'r', encoding = 'utf-8') as data:                 
+          list = [line.rstrip().split(':') for line in data]
+          return list
+    except OSError:
+        print('oops, no file')
+def converter(list):
+    dicty = {}
+    for i in range(len(list)):
+        list[i][1] = list[i][1].strip().split()
+        sum = 0
+        for z in range(len(list[i][1])):
+            sum += int(list[i][1][z])
+            dicty[list[i][0].rstrip(':')] = sum
+    return dicty
+list = file_read('20210625_trolls (2).dat')
+listy = sorted(converter(list).items(), key = lambda x:x[1], reverse = True)
+max = listy[0][1]
+count = 0
+maxcities = []
+for i in listy:
+    if i[1] == max:
+        count += 1
+        maxcities.append(i[0])
+if count == 1:
+    print(f'The city where more trolls have been reported is{maxcities[0]}, with {max} trolls')
+elif count == 2:
+    print(f'The two cities where more trolls have been reported are {maxcities[0]} and , with {max} trolls')
+else:
+    print('The cities where the most number of trolls have been reported are ', end = '')
+    for i in range(len(maxcities) - 1):
+       print(f'{maxcities[i]},', end = '')
+    print(f'and {maxcities[len(maxcities) -1]}, all with {max} trolls')
